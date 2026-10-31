@@ -1,8 +1,9 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { AuthGate, SignOutButton } from '@/features/auth';
 import { BottomNav } from '@/components/BottomNav';
+import { RegisterServiceWorker } from '@/components/RegisterServiceWorker';
 import { ResetDemoButton } from '@/components/ResetDemoButton';
 import { pl } from '@/messages/pl';
 
@@ -18,7 +19,18 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: pl.appName,
-  description: 'Networking dla muzyków - swipe, match i czat',
+  description: pl.description,
+  icons: { apple: '/pwa-icons/192' },
+  appleWebApp: {
+    capable: true,
+    title: pl.appName,
+    statusBarStyle: 'black-translucent',
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: '#09090b',
+  viewportFit: 'cover',
 };
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
@@ -28,6 +40,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body>
+        <RegisterServiceWorker />
         <div className="mx-auto flex h-dvh max-w-md flex-col">
           <header className="flex items-center justify-between px-4 pt-4">
             <span className="text-xl font-bold text-white">{pl.appName}</span>

@@ -1,5 +1,6 @@
 export const pl = {
   appName: 'Music Tinder',
+  description: 'Networking dla muzyków - swipe, match i czat',
   common: {
     reset: 'Zresetuj demo',
     mockup: 'Makieta',

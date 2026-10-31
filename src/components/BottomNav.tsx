@@ -18,7 +18,7 @@ export const BottomNav = () => {
   return (
     <nav
       aria-label={pl.nav.label}
-      className="flex border-t border-white/10 bg-zinc-950"
+      className="flex border-t border-white/10 bg-zinc-950 pb-[env(safe-area-inset-bottom)]"
     >
       {ITEMS.map(({ href, label }) => {
         const active =

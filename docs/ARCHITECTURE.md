@@ -10,10 +10,12 @@ Next.js (App Router) PWA. State lives in Zustand stores persisted to `localStora
 src/
 ├── app/                 routes (thin)
 ├── features/
+│   ├── auth/            demo sign-in gate (mockup)
 │   ├── discover/        profiles, filters, swipe cards, match logic
 │   ├── chat/            ChatTransport, bot + Supabase transports, UI
-│   ├── moderation/      report/block mockups
-│   └── admin/           static admin mockup
+│   ├── moderation/      report/block actions and store
+│   └── admin/           moderation panel mockup
+├── components/          app shell: bottom nav, reset button, service worker
 ├── lib/supabase/        the only place that creates a Supabase client
 └── messages/pl.ts       UI strings
 ```
@@ -27,3 +29,7 @@ UI components -> hooks -> `api/` functions -> client/transport. A layer only tal
 - New chat backend: implement `ChatTransport` (see ADR 0001), select it in one factory.
 - New feature: add `src/features/<name>` with an `index.ts` exposing its public API.
 - Real data: replace the hardcoded profile source in `discover/api` with a Supabase query; UI and stores stay unchanged.
+
+## PWA
+
+`app/manifest.ts` and generated icons (`app/pwa-icons/[size]`) make the app installable. `public/sw.js` is a minimal network-first service worker registered in production only.
