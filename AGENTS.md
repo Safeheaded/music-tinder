@@ -21,7 +21,7 @@ Mobile-first PWA mockup: networking for musicians (swipe, match, 1:1 chat). Prof
 
 ## Rules
 
-- Layers: UI -> hooks -> `api/` -> client. Components never call Supabase directly.
+- Layers: UI -> hooks -> `api/` -> client. Components never call Supabase directly; only `lib/supabase`, `api/` and `transports/` may import it.
 - Import a feature only via `@/features/<name>`; inside a feature use relative imports. ESLint enforces this.
 - Validate external data with Zod in `schemas.ts`; derive types with `z.infer`.
 - Strict TypeScript, no `any`. Prefer small files and pure functions for logic.

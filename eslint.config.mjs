@@ -20,7 +20,7 @@ const eslintConfig = defineConfig([
             {
               group: ['@supabase/*'],
               message:
-                'Supabase is reachable only from src/lib/supabase and feature api/ folders.',
+                'Supabase is reachable only from src/lib/supabase and feature api/ or transports/ folders.',
             },
           ],
         },
@@ -28,7 +28,11 @@ const eslintConfig = defineConfig([
     },
   },
   {
-    files: ['src/lib/supabase/**', 'src/features/*/api/**'],
+    files: [
+      'src/lib/supabase/**',
+      'src/features/*/api/**',
+      'src/features/*/transports/**',
+    ],
     rules: {
       'no-restricted-imports': [
         'error',

@@ -14,4 +14,8 @@ export interface ChatTransport {
   close: () => void;
 }
 
+export interface PeerAwareTransport extends ChatTransport {
+  hasPeer: () => boolean;
+}
+
 export type ChatTransportFactory = (profileId: string) => ChatTransport;
