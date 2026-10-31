@@ -7,10 +7,13 @@ import { pl } from '@/messages/pl';
 const ITEMS = [
   { href: '/', label: pl.nav.discover },
   { href: '/chats', label: pl.nav.chats },
+  { href: '/admin', label: pl.nav.admin },
 ] as const;
 
 export const BottomNav = () => {
   const pathname = usePathname();
+
+  if (pathname === '/login') return null;
 
   return (
     <nav

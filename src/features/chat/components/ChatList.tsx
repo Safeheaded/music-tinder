@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { selectMatches, useDiscoverStore } from '@/features/discover';
+import { useModerationStore } from '@/features/moderation';
 import { useHydrated } from '@/lib/use-hydrated';
 import { pl } from '@/messages/pl';
 import { useChatStore } from '../store';
@@ -9,11 +10,12 @@ import { useChatStore } from '../store';
 export const ChatList = () => {
   const hydrated = useHydrated();
   const matchIds = useDiscoverStore((state) => state.matchIds);
+  const blockedIds = useModerationStore((state) => state.blockedIds);
   const conversations = useChatStore((state) => state.conversations);
 
   if (!hydrated) return null;
 
-  const matches = selectMatches(matchIds);
+  const matches = selectMatches(matchIds, blockedIds);
 
   return (
     <section className="flex h-full flex-col gap-2 p-4">

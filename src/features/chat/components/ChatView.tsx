@@ -1,8 +1,10 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { selectProfile } from '@/features/discover';
+import { ProfileActions } from '@/features/moderation';
 import { useHydrated } from '@/lib/use-hydrated';
 import { pl } from '@/messages/pl';
 import { useConversation } from '../useConversation';
@@ -14,6 +16,7 @@ type ChatViewProps = {
 };
 
 export const ChatView = ({ profileId, transportFactory }: ChatViewProps) => {
+  const router = useRouter();
   const hydrated = useHydrated();
   const profile = selectProfile(profileId);
   const { messages, peerTyping, send } = useConversation(
@@ -48,10 +51,15 @@ export const ChatView = ({ profileId, transportFactory }: ChatViewProps) => {
           alt=""
           className="size-10 rounded-full object-cover"
         />
-        <div>
+        <div className="flex-1">
           <h1 className="font-semibold text-white">{profile.name}</h1>
           <p className="text-xs text-zinc-400">{profile.role}</p>
         </div>
+        <ProfileActions
+          profileId={profile.id}
+          profileName={profile.name}
+          onBlocked={() => router.push('/chats')}
+        />
       </header>
       <ol
         aria-label={pl.chat.messages}

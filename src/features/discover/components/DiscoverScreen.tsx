@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { ProfileActions, useModerationStore } from '@/features/moderation';
 import { useHydrated } from '@/lib/use-hydrated';
 import { pl } from '@/messages/pl';
 import { hasActiveFilters } from '../filters';
@@ -14,10 +15,11 @@ import { SwipeCard } from './SwipeCard';
 export const DiscoverScreen = () => {
   const hydrated = useHydrated();
   const { decisions, filters, swipe, setFilters } = useDiscoverStore();
+  const blockedIds = useModerationStore((state) => state.blockedIds);
   const [leaving, setLeaving] = useState<SwipeDirection | null>(null);
   const [matched, setMatched] = useState<Profile | null>(null);
 
-  const deck = selectDeck(decisions, filters);
+  const deck = selectDeck(decisions, filters, blockedIds);
   const current = deck[0];
 
   const commitSwipe = () => {
@@ -38,6 +40,12 @@ export const DiscoverScreen = () => {
             key={current.id}
             profile={current}
             leaving={leaving}
+            actions={
+              <ProfileActions
+                profileId={current.id}
+                profileName={current.name}
+              />
+            }
             onSwipe={setLeaving}
             onExited={commitSwipe}
           />

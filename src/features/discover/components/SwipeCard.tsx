@@ -1,4 +1,5 @@
 import { motion, useMotionValue, useTransform } from 'framer-motion';
+import type { ReactNode } from 'react';
 import type { Profile, SwipeDirection } from '../schemas';
 
 const SWIPE_THRESHOLD = 100;
@@ -7,6 +8,7 @@ const EXIT_DISTANCE = 600;
 type SwipeCardProps = {
   profile: Profile;
   leaving: SwipeDirection | null;
+  actions?: ReactNode;
   onSwipe: (direction: SwipeDirection) => void;
   onExited: () => void;
 };
@@ -14,6 +16,7 @@ type SwipeCardProps = {
 export const SwipeCard = ({
   profile,
   leaving,
+  actions,
   onSwipe,
   onExited,
 }: SwipeCardProps) => {
@@ -36,7 +39,7 @@ export const SwipeCard = ({
       transition={{ duration: 0.25 }}
       onAnimationComplete={() => leaving && onExited()}
     >
-      <div className="flex h-2/5 items-center justify-center bg-gradient-to-br from-fuchsia-600 via-violet-600 to-indigo-700">
+      <div className="relative flex h-2/5 items-center justify-center bg-gradient-to-br from-fuchsia-600 via-violet-600 to-indigo-700">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={profile.avatar}
@@ -44,6 +47,7 @@ export const SwipeCard = ({
           draggable={false}
           className="size-32 rounded-full object-cover ring-4 ring-white/30"
         />
+        <div className="absolute top-3 right-3">{actions}</div>
       </div>
       <div className="flex flex-1 flex-col gap-3 p-5">
         <div>

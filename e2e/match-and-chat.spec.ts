@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 
 test('swipe, match and chat with the bot', async ({ page }) => {
   await page.goto('/');
+  await page.getByRole('button', { name: 'Wejdź jako demo' }).click();
 
   await page.getByRole('button', { name: 'Polub' }).click();
   await expect(page.getByRole('dialog')).toContainText('To match!');

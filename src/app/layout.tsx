@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
+import { AuthGate, SignOutButton } from '@/features/auth';
 import { BottomNav } from '@/components/BottomNav';
 import { ResetDemoButton } from '@/components/ResetDemoButton';
 import { pl } from '@/messages/pl';
@@ -35,9 +36,12 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
                 {pl.common.mockup}
               </span>
               <ResetDemoButton />
+              <SignOutButton />
             </span>
           </header>
-          <div className="min-h-0 flex-1">{children}</div>
+          <div className="min-h-0 flex-1">
+            <AuthGate>{children}</AuthGate>
+          </div>
           <BottomNav />
         </div>
       </body>
