@@ -4,6 +4,8 @@ Mobile-first PWA: networking dla muzyków - swipe, match i czat 1:1 w czasie rze
 
 **Demo:** https://music-tinder-ten.vercel.app (najlepiej na telefonie lub w widoku mobilnym)
 
+**Kod:** https://github.com/Safeheaded/music-tinder
+
 | Logowanie                         | Odkrywanie                           | Match                             | Czat                             | Admin                             |
 | --------------------------------- | ------------------------------------ | --------------------------------- | -------------------------------- | --------------------------------- |
 | ![](docs/screenshots/1-login.png) | ![](docs/screenshots/2-discover.png) | ![](docs/screenshots/3-match.png) | ![](docs/screenshots/4-chat.png) | ![](docs/screenshots/5-admin.png) |
