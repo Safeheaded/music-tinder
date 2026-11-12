@@ -1,5 +1,11 @@
 import { defineConfig, devices } from '@playwright/test';
 
+try {
+  process.loadEnvFile('.env.local');
+} catch {
+  // no local env file: Supabase-dependent tests are skipped
+}
+
 export default defineConfig({
   testDir: './e2e',
   use: { baseURL: 'http://localhost:3000' },
