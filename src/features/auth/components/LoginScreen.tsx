@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { pl } from '@/messages/pl';
+import { safeNextPath } from '../nextPath';
 import { useAuthStore } from '../store';
 
 export const LoginScreen = () => {
@@ -29,7 +30,8 @@ export const LoginScreen = () => {
         autoFocus
         onClick={() => {
           signInAsDemo();
-          router.replace('/');
+          const next = new URLSearchParams(window.location.search).get('next');
+          router.replace(safeNextPath(next));
         }}
         className="rounded-full bg-fuchsia-600 py-3 font-medium text-white"
       >

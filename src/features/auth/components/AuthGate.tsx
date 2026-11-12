@@ -15,7 +15,9 @@ export const AuthGate = ({ children }: { children: ReactNode }) => {
   const blocked = hydrated && !loggedIn && pathname !== LOGIN_PATH;
 
   useEffect(() => {
-    if (blocked) router.replace(LOGIN_PATH);
+    if (!blocked) return;
+    const next = window.location.pathname + window.location.search;
+    router.replace(`${LOGIN_PATH}?next=${encodeURIComponent(next)}`);
   }, [blocked, router]);
 
   if (!hydrated || blocked) return null;

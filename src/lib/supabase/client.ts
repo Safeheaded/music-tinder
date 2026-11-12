@@ -9,3 +9,5 @@ export const getSupabaseClient = (): SupabaseClient | null => {
   client = url && anonKey ? createClient(url, anonKey) : null;
   return client;
 };
+
+export const isSupabaseConfigured = () => getSupabaseClient() !== null;

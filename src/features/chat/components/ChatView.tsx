@@ -1,12 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { selectProfile } from '@/features/discover';
 import { ProfileActions } from '@/features/moderation';
 import { useHydrated } from '@/lib/use-hydrated';
+import { isSupabaseConfigured } from '@/lib/supabase/client';
 import { pl } from '@/messages/pl';
+import { generateRoomCode, parseRoomCode } from '../roomCode';
 import { useConversation } from '../useConversation';
 import type { ChatTransportFactory } from '../transports/types';
 
@@ -19,11 +21,14 @@ export const ChatView = ({ profileId, transportFactory }: ChatViewProps) => {
   const router = useRouter();
   const hydrated = useHydrated();
   const profile = selectProfile(profileId);
-  const { messages, peerTyping, send } = useConversation(
+  const roomCode = parseRoomCode(useSearchParams().get('room'));
+  const { messages, peerTyping, send } = useConversation({
     profileId,
+    roomCode,
     transportFactory,
-  );
+  });
   const [draft, setDraft] = useState('');
+  const [invite, setInvite] = useState<{ link: string; copied: boolean }>();
   const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -32,6 +37,18 @@ export const ChatView = ({ profileId, transportFactory }: ChatViewProps) => {
 
   if (!hydrated) return null;
   if (!profile) return <p className="p-4 text-zinc-400">{pl.chat.notFound}</p>;
+
+  const handleInvite = async () => {
+    const code = roomCode ?? generateRoomCode();
+    const path = `/chats/${profileId}?room=${code}`;
+    if (!roomCode) router.replace(path);
+    const link = `${window.location.origin}${path}`;
+    const copied = await navigator.clipboard
+      ?.writeText(link)
+      .then(() => true)
+      .catch(() => false);
+    setInvite({ link, copied: !!copied });
+  };
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -55,12 +72,37 @@ export const ChatView = ({ profileId, transportFactory }: ChatViewProps) => {
           <h1 className="font-semibold text-white">{profile.name}</h1>
           <p className="text-xs text-zinc-400">{profile.role}</p>
         </div>
+        {isSupabaseConfigured() && (
+          <button
+            onClick={handleInvite}
+            className="rounded-full bg-white/10 px-3 py-2 text-xs text-white"
+          >
+            {pl.chat.invite}
+          </button>
+        )}
         <ProfileActions
           profileId={profile.id}
           profileName={profile.name}
           onBlocked={() => router.push('/chats')}
         />
       </header>
+      {roomCode && (
+        <p className="px-4 pt-2 text-xs text-fuchsia-300">
+          {pl.chat.room(roomCode)}
+        </p>
+      )}
+      {invite && (
+        <p role="status" className="px-4 pt-2 text-xs text-zinc-300">
+          {invite.copied ? (
+            pl.chat.inviteCopied
+          ) : (
+            <>
+              {pl.chat.inviteManual}{' '}
+              <span className="break-all">{invite.link}</span>
+            </>
+          )}
+        </p>
+      )}
       <ol
         aria-label={pl.chat.messages}
         className="flex flex-1 flex-col gap-2 overflow-y-auto p-4"

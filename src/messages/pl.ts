@@ -65,5 +65,9 @@ export const pl = {
     typing: (name: string) => `${name} pisze…`,
     placeholder: 'Napisz wiadomość',
     send: 'Wyślij',
+    invite: 'Zaproś na drugim urządzeniu',
+    inviteCopied: 'Link skopiowany. Otwórz go na drugim urządzeniu.',
+    inviteManual: 'Skopiuj link i otwórz go na drugim urządzeniu:',
+    room: (code: string) => `Pokój prywatny: ${code}`,
   },
 } as const;

@@ -18,4 +18,9 @@ export interface PeerAwareTransport extends ChatTransport {
   hasPeer: () => boolean;
 }
 
-export type ChatTransportFactory = (profileId: string) => ChatTransport;
+export type ChatContext = {
+  profileId: string;
+  roomCode: string | null;
+};
+
+export type ChatTransportFactory = (context: ChatContext) => ChatTransport;
